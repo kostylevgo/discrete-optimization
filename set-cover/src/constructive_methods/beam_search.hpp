@@ -1,3 +1,5 @@
+#pragma once
+
 #include "greedy.hpp"
 
 #include <algorithm>

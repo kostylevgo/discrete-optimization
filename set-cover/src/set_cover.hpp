@@ -1,8 +1,11 @@
+#pragma once
+
 #include "timsort.hpp"
 
 #include <tr2/dynamic_bitset>
 
 #include <vector>
+#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <string>
@@ -71,6 +74,14 @@ struct SetCover {
         return sets.size();
     }
 
+    size_t number_of_items() const {
+        return item_count;
+    }
+
+    const std::vector<Set>& get_sets() const {
+        return sets;
+    }
+
     int64_t evaluate() const {
         if (covered_items.count() != item_count) {
             return INF;
@@ -116,23 +127,31 @@ struct SetCover {
     }
 
   private:
-    explicit SetCover(size_t item_count, std::vector<Set> sets):
-            item_count(item_count), sets(std::move(sets)), covered_items(item_count) {
+    explicit SetCover(size_t item_count, std::vector<Set> all_sets):
+            item_count(item_count), sets(std::move(all_sets)), covered_items(item_count), usage_count(item_count) {
+        for (auto& s : sets) {
+            for (auto x : s.items) {
+                ++usage_count[x];
+            }
+        }
         greedy_sort();
     }
 
     void next_item(bool faster = false) {
+        for (auto x : sets[viewed_sets].items) {
+            --usage_count[x];
+        }
         ++viewed_sets;
         if (!faster) {
             greedy_sort();
         }
     }
 
-    size_t free_items(const Set& s) {
-        size_t answer = 0;
+    double benefit(const Set& s) {
+        double answer = 0;
         for (auto x : s.items) {
             if (!covered_items[x]) {
-                ++answer;
+                answer += sqrt(usage_count[x]);
             }
         }
         return answer;
@@ -140,7 +159,7 @@ struct SetCover {
 
     void greedy_sort() {
         gfx::timsort(sets.begin() + viewed_sets, sets.end(), [&](const Set& lhs, const Set& rhs) {
-            return lhs.cost * (int64_t)free_items(rhs) < rhs.cost * (int64_t)free_items(lhs);
+            return lhs.cost / benefit(lhs) < rhs.cost / benefit(rhs);
         });
     }
 
@@ -148,6 +167,7 @@ struct SetCover {
     size_t item_count;
     std::vector<Set> sets;
     std::tr2::dynamic_bitset<> covered_items;
+    std::vector<int64_t> usage_count;
     size_t viewed_sets = 0;
     int64_t answer = 0;
 };

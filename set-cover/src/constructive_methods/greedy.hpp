@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdint>
 
 template <class P>
