@@ -18,7 +18,7 @@ results:
 
 results/%: data/% | results
 	@cmake --build build --target set_cover
-	time build/set_cover < $< > $@
+	time build/set_cover $< < $< > $@
 
 clean:
 	rm -r results
