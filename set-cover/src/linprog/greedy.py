@@ -16,23 +16,25 @@ for i in range(set_count):
 match_matrix = np.array(match_matrix)
 weights = np.array(weights)
 
-lin_solution = scipy.optimize.linprog(c=weights, A_ub=-match_matrix, b_ub=-np.ones(item_count), bounds=(0, 1)).x
+cur_solution = np.zeros(set_count)
 
-la = 1
-step = 1.01
-
-np.random.seed(31)
+conditions = []
 
 while True:
-    chance = la * lin_solution
-    rnd = np.random.random(set_count)
-    cur_solution = rnd < chance
-
     coverage = match_matrix @ cur_solution
     if np.min(coverage) > 1 - 1e-6:
         break
+    
+    A_ub = -np.concatenate((match_matrix, np.array(conditions))) if len(conditions) > 0 else -match_matrix
+    b_ub = -np.ones(item_count + len(conditions))
 
-    la *= step
+    solution = scipy.optimize.linprog(c=weights, A_ub=A_ub, b_ub=b_ub, bounds=(0, 1)).x
+    diff = solution - cur_solution
+    mx = np.argmax(diff)
+    cur_solution[mx] = 1
+
+    conditions.append(np.zeros(set_count))
+    conditions[-1][mx] = 1
 
 score = weights @ cur_solution
 

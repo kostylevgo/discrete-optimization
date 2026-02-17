@@ -14,10 +14,9 @@ void beam(const SetCover& task, size_t bound) {
     beam.print();
 }
 
-void call_python(char* input) {
+void call_python(char* input, std::string file) {
     freopen(input, "r", stdin);
     std::string python = "./venv/bin/python3";
-    std::string file = "./src/linprog.py";
     char* argv[3];
     argv[0] = python.data();
     argv[1] = file.data();
@@ -27,18 +26,25 @@ void call_python(char* input) {
 
 int main(int argc, char** argv) {
     SetCover task = SetCover::read();
+#ifdef BASIC_LINPROG
+    call_python(argv[1], "./src/linprog/basic.py");
+#elifdef GREEDY
+    greedy(task);
+#elifdef BEAM
+    if (task.number_of_sets() < 500) {
+        beam(task, 30);
+    } else if (task.number_of_sets() <= 1000) {
+        beam(task, 10);
+    } else {
+        greedy(task);
+    }
+#elifdef GREEDY_LINPROG
+    call_python(argv[1], "./src/linprog/greedy.py");
+#else
     if (task.number_of_items() <= 30) {
         dynamic_programming(task);
-        return 0;
+    } else {
+        call_python(argv[1], "./src/linprog/filtering.py");
     }
-    call_python(argv[1]);
-    // if (task.number_of_sets() < 500) {
-    //     call_python(argv[1]);
-    //     return 0;
-    // }
-    // if (task.number_of_sets() <= 1000) {
-    //     beam(task, 10);
-    // } else {
-    //     greedy(task);
-    // }
+#endif
 }

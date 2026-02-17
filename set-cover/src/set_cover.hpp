@@ -156,9 +156,11 @@ struct SetCover {
     }
 
     void find_next_greedy() {
-        auto mx = std::ranges::max_element(sets.begin() + viewed_sets, sets.end(), [&](const Set& lhs, const Set& rhs) {
+        auto first = sets.begin() + viewed_sets;
+        auto mn = std::ranges::min_element(first, sets.end(), [&](const Set& lhs, const Set& rhs) {
             return lhs.cost / benefit(lhs) < rhs.cost / benefit(rhs);
         });
+        std::swap(*first, *mn);
     }
 
   private:

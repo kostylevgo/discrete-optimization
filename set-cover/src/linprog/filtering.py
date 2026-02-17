@@ -1,5 +1,3 @@
-# import sys
-
 import numpy as np
 import scipy
 
@@ -65,7 +63,6 @@ set_sizes = np.sum(match_matrix, axis=0)
 greedy_cost = set_sizes / weights
 approx_answer = weights @ lin_solution
 low_cost = item_count / (approx_answer * 2.5)
-# print(approx_answer, low_cost, file=sys.stderr)
 trash = greedy_cost < low_cost
 not_trash = trash == 0
 
@@ -80,12 +77,9 @@ if np.min(good_match_matrix @ np.ones(np.sum(not_trash))) > 1e-6:
     datas = good_datas
     set_count = match_matrix.shape[1]
 
-# print(set_count, file=sys.stderr)
-
 approx_answer_size = np.sum(best_answer)
 approx_complexity = set_count * item_count * approx_answer_size
 attempts = min(300, int(5e9 / approx_complexity))
-# print(f"Attempts: {attempts}", file=sys.stderr)
 
 was_updated = False
 for i in range(attempts):
@@ -95,7 +89,6 @@ for i in range(attempts):
         best_answer = answer
         was_updated = True
 
-# print(was_updated, file=sys.stderr)
 print(f"Score: {int(round(best_score))}")
 if not was_updated:
     datas = old_datas
