@@ -1,6 +1,6 @@
 #pragma once
 
-#include "set_cover.hpp"
+#include "../set_cover.hpp"
 
 struct State {
     int cost = -1;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "timsort.hpp"
-
 #include <tr2/dynamic_bitset>
 
 #include <vector>
@@ -134,7 +132,7 @@ struct SetCover {
                 ++usage_count[x];
             }
         }
-        greedy_sort();
+        find_next_greedy();
     }
 
     void next_item(bool faster = false) {
@@ -143,7 +141,7 @@ struct SetCover {
         }
         ++viewed_sets;
         if (!faster) {
-            greedy_sort();
+            find_next_greedy();
         }
     }
 
@@ -157,8 +155,8 @@ struct SetCover {
         return answer;
     }
 
-    void greedy_sort() {
-        gfx::timsort(sets.begin() + viewed_sets, sets.end(), [&](const Set& lhs, const Set& rhs) {
+    void find_next_greedy() {
+        auto mx = std::ranges::max_element(sets.begin() + viewed_sets, sets.end(), [&](const Set& lhs, const Set& rhs) {
             return lhs.cost / benefit(lhs) < rhs.cost / benefit(rhs);
         });
     }
@@ -171,4 +169,3 @@ struct SetCover {
     size_t viewed_sets = 0;
     int64_t answer = 0;
 };
-

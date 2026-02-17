@@ -1,6 +1,6 @@
 #include "constructive_methods/beam_search.hpp"
 #include "set_cover.hpp"
-#include "dynamic_programming.hpp"
+#include "precise_methods/dynamic_programming.hpp"
 
 #include <unistd.h>
 
