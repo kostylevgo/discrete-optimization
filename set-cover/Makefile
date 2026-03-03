@@ -16,7 +16,7 @@ results/%: data/% | results venv
 	@cmake --build build --target main
 	$(TIME) build/main $< < $< > $@
 	$(CHECKER) results
-
+	cp ./results/report.txt .
 
 
 

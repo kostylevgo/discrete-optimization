@@ -107,7 +107,6 @@ struct SetCover {
             covered_items[x] = true;
         }
         next_item(faster);
-        return;
     }
 
     void print() {
