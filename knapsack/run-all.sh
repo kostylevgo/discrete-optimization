@@ -3,7 +3,7 @@
 set -euo pipefail
 
 data="data"
-results="results-beam"
+results="results"
 exe="./build/main"
 mkdir $(dirname exe) -p
 
@@ -25,3 +25,4 @@ for file in ./"$data"/*; do
 done
 
 python3 "./src/checker.py" "$results"
+cp "./results/report.txt" .
