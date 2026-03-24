@@ -24,5 +24,5 @@ for file in ./"$data"/*; do
     fi
 done
 
-# python3 "./src/checker.py" "$results"
-# cp "./results/report.txt" .
+python3 "./src/checker.py" "$results"
+cp "./$results/report.txt" .

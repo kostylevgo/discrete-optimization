@@ -18,8 +18,8 @@ def check_file(input, output):
     edges = []
     for x in input[1:]:
         edges.append(tuple(map(int, x.split(' '))))
-
-    colors = map(int, output[1].split())
+    
+    colors = list(map(int, output[1].split()))
     real_answer = len(set(colors))
 
     if real_answer != promised_answer:
