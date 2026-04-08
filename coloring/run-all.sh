@@ -5,7 +5,7 @@ set -euo pipefail
 data="data"
 results="results-simple"
 exe="./build/main"
-mkdir $(dirname exe) -p
+mkdir $(dirname $exe) -p
 
 compile_debug="g++ -std=c++23 -O0 -D_GLIBCXX_DEBUG -fsanitize=address,undefined -g -o $exe"
 compile_release="g++ -std=c++23 -O3 -o $exe"

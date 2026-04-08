@@ -45,10 +45,8 @@ with open(dir / "report.txt", "w") as report:
     files = list(x for x in Path(dir).iterdir() if x.is_file() and x.name != "report.txt")
     files.sort(key=lambda x: (get_test_size(x.name), x.name))
     for file in files:
-        if not file.is_file() or file.name == "report.txt":
-            continue
         name = file.name
-        with open(data / name, "r") as input, open(dir / name, "r") as output:
+        with open(data / name, "r") as input, open(file, "r") as output:
             report.write(f"{name}: {check_file(input.readlines(), output.readlines())}\n")
 
         
