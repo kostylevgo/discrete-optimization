@@ -35,10 +35,10 @@ def check_file(input, output):
 dir = Path(sys.argv[1])
 data = Path("./data")
 
-with open(dir / "report.txt", "w") as report:
-    files = list(x for x in Path(dir).iterdir() if x.is_file() and x.name != "report.txt")
+with open(dir / "verdict.txt", "w") as verdict:
+    files = list(x for x in Path(dir).iterdir() if x.is_file() and x.name != "verdict.txt")
     files.sort(key=lambda x: (get_test_size(x.name), x.name))
     for file in files:
         name = file.name
         with open(data / name, "r") as input, open(file, "r") as output:
-            report.write(f"{name}: {check_file(input.readlines(), output.readlines())}\n")
+            verdict.write(f"{name}: {check_file(input.readlines(), output.readlines())}\n")

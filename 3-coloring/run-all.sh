@@ -25,4 +25,4 @@ for file in ./"$data"/*; do
 done
 
 python3 "./src/checker.py" "$results"
-cp "./$results/report.txt" .
+cp "./$results/verdict.txt" .
