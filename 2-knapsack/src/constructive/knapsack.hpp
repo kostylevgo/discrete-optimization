@@ -11,13 +11,12 @@ struct ConstructiveKnapsack {
     Knapsack ks;
     Answer ans;
 
-    explicit ConstructiveKnapsack(Knapsack sack): ks(std::move(sack)) {
-        std::ranges::sort(ks.items, GreedyItemComparator());
-        std::ranges::reverse(ks.items);
+    explicit ConstructiveKnapsack(Knapsack ks): ks(std::move(ks)) {
+        ranges::reverse(ks);
     }
 
     bool has_actions() const {
-        return !ks.items.empty();
+        return !ks.empty();
     }
 
     std::vector<Action> actions() const {
@@ -26,18 +25,18 @@ struct ConstructiveKnapsack {
             return result;
         }
         result.push_back(NotTake);
-        if (ks.items.back().weight <= ks.W) {
+        if (ks.back().weight <= ks.W) {
             result.push_back(Take);
         }
         return result;
     }
 
     int64_t evaluate() const {
-        return -ans.max_cost; // less is better
+        return -ans.total_cost; // less is better
     }
 
     Action greedy_action() const {
-        if (!ks.items.empty() && ks.items.back().weight <= ks.W) {
+        if (!ks.empty() && ks.back().weight <= ks.W) {
             return Take;
         }
         return NotTake;
@@ -45,9 +44,9 @@ struct ConstructiveKnapsack {
 
     void apply(Action action, bool ignored = false) {
         if (action == Take) {
-            ks.W -= ks.items.back().weight;
-            ans.add(ks.items.back());
+            ks.W -= ks.back().weight;
+            ans.add(ks.back());
         }
-        ks.items.pop_back();
+        ks.pop_back();
     }
 };

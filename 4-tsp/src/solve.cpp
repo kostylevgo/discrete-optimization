@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 #include "max_general_matching.hpp"
 
-#include "debug/debug.hpp"
+#include "util/stopwatch.hpp"
 
 using namespace std;
+using namespace std::chrono_literals;
 
 struct Point {
     friend istream& operator>>(istream& is, Point& p) {
@@ -244,16 +245,6 @@ Solution christofides_serduykov(const Problem& p) {
     ranges::copy(mst_degree | views::enumerate | views::filter([](pair<int, int> x) {return x.second % 2 == 1;}) | views::keys, back_inserter(odd_degree));
     auto match_edges = best_matching(p, odd_degree);
 
-
-    double mst_len = 0;
-    for (auto [u, v] : mst_edges) {
-        mst_len += distance(p[u], p[v]);
-    }
-    double match_len = 0;
-    for (auto [u, v] : match_edges) {
-        match_len += distance(p[u], p[v]);
-    }
-
     ranges::copy(match_edges, back_inserter(mst_edges));
     auto edges = std::move(mst_edges);
     vector<pair<int, int>> path = euler_path(p.size(), edges);
@@ -398,48 +389,6 @@ Solution& mutation(Solution& s, int c = 3) {
 
     return s;
 }
-
-using namespace std::chrono_literals;
-
-class Stopwatch {
-    using Clock = std::chrono::high_resolution_clock;
-    using Duration = std::chrono::milliseconds;
-
-    static auto now() {
-        return chrono::duration_cast<Duration>(Clock().now().time_since_epoch());
-    }
-
-  public:
-    struct TimeoutException : std::exception {
-        const char* what() const noexcept override {
-            return "Timeout";
-        }
-    };
-
-    explicit Stopwatch(std::string name, Duration budget):
-        name(std::move(name)), deadline(now() + budget) {
-    }
-
-    void operator()() {
-        ++ticks;
-        if (now() > deadline) {
-            throw TimeoutException{};
-        }
-    }
-
-    void tick() {
-        (*this)();
-    }
-
-    ~Stopwatch() {
-        cerr << "ticks at " << name << ": " << ticks << endl;
-    }
-
-  private:
-    std::string name;
-    Duration deadline;
-    int ticks = 0;
-};
 
 set<pair<int, int>> get_edges(const Solution& s) {
     set<pair<int, int>> result;
@@ -638,7 +587,7 @@ Solution& kernighan_lin(Solution& s, C&& cb = NoOp()) {
             }
         }
     }
-    
+
     return s;
 }
 

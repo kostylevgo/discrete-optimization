@@ -2,6 +2,8 @@
 
 #include "knapsack.hpp"
 
+using namespace std;
+
 struct Parent {
     Item taken_item;
     Parent* next_one = nullptr;
@@ -10,17 +12,16 @@ struct Parent {
 Parent* const kInitial = (Parent*)1;
 
 Answer solve_dp(Knapsack problem) {
-    std::ranges::sort(problem.items, GreedyItemComparator());
-    std::vector<int64_t> dp(problem.W + 1, -INF);
-    std::vector<Parent*> parent(problem.W + 1, nullptr);
+    vector<int64_t> dp(problem.W + 1, -INF);
+    vector<Parent*> parent(problem.W + 1, nullptr);
     dp[0] = 0;
     parent[0] = kInitial;
     int sum_weights = 0;
     size_t parent_allocs = 0;
-    for (auto item : problem.items) {
+    for (auto item : problem) {
         auto [weight, cost] = item;
         sum_weights += weight;
-        sum_weights = std::min(sum_weights, problem.W);
+        sum_weights = min(sum_weights, problem.W);
         for (int w = sum_weights; w >= weight; --w) {
             if (parent[w - weight] != nullptr && dp[w] < dp[w - weight] + cost) {
                 dp[w] = dp[w - weight] + cost;
@@ -29,13 +30,13 @@ Answer solve_dp(Knapsack problem) {
             }
         }
     }
-    auto best_it = std::ranges::max_element(dp);
+    auto best_it = ranges::max_element(dp);
     Parent* best_parent = parent[best_it - dp.begin()];
     Answer answer;
     while (best_parent != kInitial) {
         answer.add(best_parent->taken_item);
         best_parent = best_parent->next_one;
     }
-    std::cerr << "Parent allocs: " << parent_allocs << std::endl;
+    cerr << "Parent allocs: " << parent_allocs << endl;
     return answer;
 }

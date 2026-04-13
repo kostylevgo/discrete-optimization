@@ -7,15 +7,19 @@ rm results -rf
 rm build -rf
 cmake -S ./src -B build
 make
+cd ..
 
-cd ../2-knapsack
+cd 2-knapsack
 rm results -rf
 ./run-all.sh
+cd ..
 
-cd ../3-coloring
+cd 3-coloring
 rm results -rf
 ./run-all.sh
+cd ..
 
-cd ../4-tsp
+cd 4-tsp
 rm results -rf
 ./run-all.sh
+cd ..

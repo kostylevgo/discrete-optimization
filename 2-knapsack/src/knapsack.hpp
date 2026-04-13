@@ -7,6 +7,8 @@
 
 const int64_t INF = 1e18;
 
+using namespace std;
+
 struct Item {
     int weight;
     int cost;
@@ -14,39 +16,57 @@ struct Item {
 
 struct GreedyItemComparator {
     bool operator()(Item a, Item b) const {
-        return a.cost * b.weight > b.cost * a.weight;
+        return int64_t{a.cost} * b.weight > int64_t{b.cost} * a.weight;
     }
 };
 
-struct Knapsack {
+struct Knapsack : public vector<Item> {
     int W;
-    std::vector<Item> items;
+    vector<int64_t> pref_weight, pref_cost;
 
-    static Knapsack read() {
-        Knapsack result;
+    void read() {
         int n;
-        std::cin >> n >> result.W;
-        result.items.resize(n);
-        for (auto& [weight, cost] : result.items) {
-            std::cin >> cost >> weight;
+        cin >> n >> W;
+        resize(n);
+        for (auto& [weight, cost] : *this) {
+            cin >> cost >> weight;
         }
-        return result;
+        ranges::sort(*this, GreedyItemComparator());
+        pref_weight.reserve(size() + 1);
+        pref_cost.reserve(size() + 1);
+        pref_weight.push_back(0);
+        pref_cost.push_back(0);
+        for (auto [weight, cost] : *this) {
+            pref_weight.push_back(pref_weight.back() + weight);
+            pref_cost.push_back(pref_cost.back() + cost);
+        }
     }
 };
 
-struct Answer {
-    int64_t max_cost = 0;
-    std::vector<Item> taken;
+struct Answer : public vector<Item> {
+    int64_t total_cost = 0;
+    int64_t total_weight = 0;
 
     void add(Item item) {
-        max_cost += item.cost;
-        taken.push_back(item);
+        total_cost += item.cost;
+        total_weight += item.weight;
+        push_back(item);
+    }
+
+    void pop() {
+        total_cost -= back().cost;
+        total_weight -= back().weight;
+        pop_back();
     }
 
     void print() const {
-        std::cout << "Score: " << max_cost << '\n';
-        for (auto [weight, cost] : taken) {
+        std::cout << "Score: " << total_cost << '\n';
+        for (auto [weight, cost] : *this) {
             std::cout << cost << ' ' << weight << '\n';
         }
     }
+
+  private:
+    using vector<Item>::push_back;
+    using vector<Item>::pop_back;
 };
