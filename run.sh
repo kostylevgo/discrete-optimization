@@ -16,6 +16,7 @@ cd ..
 
 cd 3-coloring
 rm results -rf
+./install.sh
 ./run-all.sh
 cd ..
 
