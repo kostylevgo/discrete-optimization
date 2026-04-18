@@ -2,11 +2,15 @@
 
 set -euo pipefail
 
+cd tasks
+
 cd 1-set-cover
-rm results -rf
+rm venv -rf
 rm build -rf
-cmake -S ./src -B build
+rm results -rf
+# rm results* -rf
 make
+# make all_scored
 cd ..
 
 cd 2-knapsack

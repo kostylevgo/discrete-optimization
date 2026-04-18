@@ -1,6 +1,0 @@
-_scored_sc_157_0: Ok 94400
-_scored_sc_330_0: Ok 23
-_scored_sc_1000_11: Ok 146
-_scored_sc_5000_1: Ok 30
-_scored_sc_10000_2: Ok 167
-_scored_sc_10000_5: Ok 64

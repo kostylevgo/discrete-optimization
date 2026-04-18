@@ -1,6 +1,8 @@
-*/target
-*/build*
 .vscode
-*/.vscode
-abseil-cpp
+
 __pycache__
+venv
+
+abseil-cpp
+
+build*
