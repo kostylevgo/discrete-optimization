@@ -11,16 +11,16 @@ cd ..
 
 cd 2-knapsack
 rm results -rf
-./run-all.sh
+./run.sh
 cd ..
 
 cd 3-coloring
 rm results -rf
 ./install.sh
-./run-all.sh
+./run.sh
 cd ..
 
 cd 4-tsp
 rm results -rf
-./run-all.sh
+./run.sh
 cd ..

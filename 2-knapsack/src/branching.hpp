@@ -5,6 +5,8 @@
 #include "constructive/knapsack.hpp"
 #include "constructive/beam_search.hpp"
 
+#include <cassert>
+
 void branch_n_bounds(int i, const Knapsack& ks, Answer& cur, Answer& best) {
     if (cur.total_cost > best.total_cost) {
         best = cur;
@@ -12,9 +14,8 @@ void branch_n_bounds(int i, const Knapsack& ks, Answer& cur, Answer& best) {
     int64_t can_take = ks.W - cur.total_weight;
     int too_much = ranges::upper_bound(ks.pref_weight, ks.pref_weight[i] + can_take) - ks.pref_weight.begin();
     int64_t not_too_much_weight = ks.pref_weight[too_much - 1] - ks.pref_weight[i];
-    if (not_too_much_weight + cur.total_weight > ks.W) {
-        exit(1);
-    }
+    assert(not_too_much_weight + cur.total_weight <= ks.W);
+
     int64_t added_cost = ks.pref_cost[too_much - 1] - ks.pref_cost[i];
     int64_t cost_upper_bound = cur.total_cost + added_cost;
     if (too_much != ks.pref_weight.size()) {
