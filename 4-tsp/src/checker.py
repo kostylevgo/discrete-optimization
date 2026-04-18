@@ -1,12 +1,8 @@
 import sys
 from pathlib import Path
 
-def get_test_size(name):
-    l = list(name.split('_'))
-    for (i, x) in enumerate(l):
-        if x == "tsp":
-            return int(l[i + 1])
-    return -1
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from checker_common.check import check
 
 def distance(a, b):
     x = a[0] - b[0]
@@ -38,13 +34,5 @@ def check_file(input, output):
     return f"Ok {real_answer:.3f}"
 
 
-dir = Path(sys.argv[1])
-data = Path("./data")
-
-with open(dir / "verdict.txt", "w") as verdict:
-    files = list(x for x in Path(dir).iterdir() if x.is_file() and x.name != "verdict.txt")
-    files.sort(key=lambda x: (get_test_size(x.name), x.name))
-    for file in files:
-        name = file.name
-        with open(data / name, "r") as input, open(file, "r") as output:
-            verdict.write(f"{name}: {check_file(input.readlines(), output.readlines())}\n")
+if __name__ == "__main__":
+    check(check_file)
