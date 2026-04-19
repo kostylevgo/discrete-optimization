@@ -9,11 +9,14 @@
 
 using namespace std;
 
+namespace tsp {
+
 vector<pair<int, int>> mst(const Problem& p) {
     vector<pair<double, int>> min_distance(p.size(), make_pair(1e18, -1));
     vector<pair<int, int>> ans;
 
     auto update = [&](int i) {
+        min_distance[i].first = -1;
         for (int j = 0; j < p.size(); ++j) {
             auto& [best_dist, best] = min_distance[j];
             double cur_dist = distance(p[i], p[j]);
@@ -28,7 +31,7 @@ vector<pair<int, int>> mst(const Problem& p) {
     for (int i = 1; i < p.size(); ++i) {
         tuple<double, int, int> best = {1e18, -1, -1};
         for (int j = 0; j < p.size(); ++j) {
-            if (min_distance[j].first == 0) continue;
+            if (min_distance[j].first == -1) continue;
             best = min(best, tuple<double, int, int>{min_distance[j].first, min_distance[j].second, j});
         }
         auto [_, par, v] = best;
@@ -110,3 +113,5 @@ Solution christofides_serduykov(const Problem& p) {
     }
     return s;
 }
+
+} // namespace tsp

@@ -23,7 +23,7 @@ class Stopwatch {
     };
 
     explicit Stopwatch(string name, Duration budget):
-        name(move(name)), deadline(now() + budget) {
+        name(std::move(name)), deadline(now() + budget) {
     }
 
     void operator()() {
@@ -38,7 +38,9 @@ class Stopwatch {
     }
 
     ~Stopwatch() {
-        cerr << "ticks at " << name << ": " << ticks << endl;
+        if (!name.empty()) {
+            cerr << "ticks at " << name << ": " << ticks << endl;
+        }
     }
 
   private:

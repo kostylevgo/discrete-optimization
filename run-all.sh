@@ -28,3 +28,13 @@ cd 4-tsp
 rm results -rf
 ./run.sh
 cd ..
+
+cd 5-facility-location
+rm results -rf
+./run.sh
+cd ..
+
+cd 6-vrp
+rm results -rf
+./run.sh
+cd ..

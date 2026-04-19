@@ -17,12 +17,14 @@ def check_file(input, output):
     if len(routes) > cars:
         return f"Wrong answer: used {len(routes)} cars, but only {cars} are available"
 
-    all_points = sum(routes)
+    all_points = []
+    for r in routes:
+        all_points += r
     if len(all_points) != customers_count or len(set(all_points)) != customers_count:
         return "Wrong answer: incorrect routes"
 
     real_answer = 0
-    for (i, route) in enumerate(cars):
+    for (i, route) in enumerate(routes):
         if any(x < 0 or x >= customers_count for x in route):
             return f"Wrong answer: incorrect route for car {i}"
         used_capacity = 0
@@ -31,7 +33,7 @@ def check_file(input, output):
         for customer in map(lambda i: customers[i], route):
             real_answer += distance(last_point, customer[1:])
             last_point = customer[1:]
-            used_capacity += customers[0]
+            used_capacity += customer[0]
         real_answer += distance(last_point, (0, 0))
 
         if used_capacity > capacity + 1e-2:

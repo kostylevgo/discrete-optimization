@@ -6,3 +6,5 @@ venv
 abseil-cpp
 
 build*
+
+status.md

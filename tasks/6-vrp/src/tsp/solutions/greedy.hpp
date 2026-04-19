@@ -6,6 +6,8 @@
 
 using namespace std;
 
+namespace tsp {
+
 Solution greedy_fixed_starting(const Problem& p, int starting = 0) {
     Solution s(p);
     set<int> unused;
@@ -22,9 +24,6 @@ Solution greedy_fixed_starting(const Problem& p, int starting = 0) {
                 closest = x;
             }
         }
-        if (dist == 0) {
-            exit(1);
-        }
         unused.erase(closest);
         s.add(closest);
     }
@@ -37,3 +36,5 @@ Solution greedy(const Problem& p) {
     }
     return ranges::min(views::iota(0, (int)p.size()) | views::transform([&](int s) {return greedy_fixed_starting(p, s);}));
 }
+
+} // namespace tsp

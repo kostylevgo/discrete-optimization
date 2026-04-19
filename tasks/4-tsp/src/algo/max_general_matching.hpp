@@ -339,9 +339,11 @@ struct MaxWeightGeneralMatching {
                 else if (S[st[b]] == 1) lab[b] -= d * W{2};
             }
             q = queue<int>();
-            for (int x : slack_roots)
+            for (int i = 0; i < slack_roots.size(); ++i) {
+                int x = slack_roots[i];
                 if (st[x] == x && slack[x] && st[slack[x]] != x && e_delta(g[slack[x]][x]) == W{0})
                     if (on_found_edge(g[slack[x]][x])) return true;
+            }
             for (int b : tree_roots)
                 if (b > n && st[b] == b && S[b] == 1 && lab[b] == W{0}) expand_blossom(b);
         }

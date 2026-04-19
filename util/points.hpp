@@ -9,6 +9,10 @@ struct Point {
         return is >> p.x >> p.y;
     }
 
+    friend ostream& operator<<(ostream& os, const Point& p) {
+        return os << setprecision(3) << fixed << '(' << p.x << ',' << ' ' << p.y << ')';
+    }
+
     Point& operator-=(Point b) {
         x -= b.x;
         y -= b.y;
@@ -18,6 +22,8 @@ struct Point {
     double x{0};
     double y{0};
 };
+
+static constexpr Point kOrigin;
 
 Point operator-(Point a, Point b) {
     a -= b;

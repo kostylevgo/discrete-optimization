@@ -2,8 +2,6 @@
 
 // source: Benq (https://codeforces.com/contest/2168/submission/370045998)
 
-// #define LOCAL
-
 #include "io.hpp"
 
 inline namespace Debug {
@@ -24,12 +22,7 @@ void err_prefix(string func, int line, string args) {
          << "[" << args << "] = ";
 }
 
-#ifdef LOCAL
 #define dbg(args...) err_prefix(__FUNCTION__, __LINE__, #args), err(args)
 #define dbgn(args...) err_prefix(__FUNCTION__, __LINE__, #args), errn(args)
-#else
-#define dbg(...)
-#define dbgn(args...)
-#endif
 
 }  // namespace Debug

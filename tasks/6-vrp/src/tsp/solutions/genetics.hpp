@@ -9,6 +9,8 @@
 
 using namespace std;
 
+namespace tsp {
+
 bool find_best_permutation(Solution& s, int i, int permutation_length) {
     const Problem& p = *s.p;
     bool improved = false;
@@ -337,18 +339,9 @@ Solution& kernighan_lin(Solution& s, C&& cb = NoOp()) {
     return s;
 }
 
-Solution genetics(Solution starting) {
+Solution genetics(Solution starting, int epochs) {
     int population_size = min((int)starting.size(), 2000);
-    Stopwatch watch("genetics", starting.size() <= 2000 ? 1min : 5min);
-    /* ticks:
-     * 51_1:    40778
-     * 100_3:   11888
-     * 200_2:   2602
-     * 574_1:   719
-     * 1889_1:  72
-     */
     mt19937 gen(31);
-    try {
 
     double length = starting.length();
 
@@ -369,10 +362,9 @@ Solution genetics(Solution starting) {
         double len = s.length();
         update(s, len);
         population.emplace_back(std::move(s), len);
-        watch();
     }
 
-    while (true) {
+    for (int i = 0; i < epochs; ++i) {
         while (population.size() < 4 * population_size) {
             int i = gen() % population_size;
             int j = gen() % (population_size - 1);
@@ -386,14 +378,12 @@ Solution genetics(Solution starting) {
             double l = s.length();
             update(s, l);
             population.emplace_back(std::move(s), l);
-
-            watch();
         }
         ranges::sort(population, {}, &pair<Solution, double>::second);
         population.erase(population.begin() + population_size, population.end());
     }
 
-    } catch (const Stopwatch::TimeoutException&) {
-    }
     return starting;
 }
+
+} // namespace tsp

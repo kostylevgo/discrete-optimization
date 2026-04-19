@@ -1,4 +1,4 @@
-#include "classes/solution.hpp"
+#include "problem.hpp"
 
 #include "solutions/greedy.hpp"
 #include "solutions/christofides.hpp"
