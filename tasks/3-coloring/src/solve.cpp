@@ -1,7 +1,8 @@
 #include "genetics.hpp"
 #include "branching.hpp"
+#include "tabu.hpp"
 
-#include "../../../util/stopwatch.hpp"
+#include <util/stopwatch.hpp>
 
 #include <bits/stdc++.h>
 
@@ -67,6 +68,15 @@ int main() {
     // Coloring answer = greedy_randomized(gr);
     // Coloring answer = from_genetics(gr, 5min);
     Coloring answer = d_satur(gr);
-    improve_with_branching(gr, answer, 1min);
+    if (answer.colors() < 30) {
+        improve_with_branching(gr, answer, 1min);
+    } else {
+        Stopwatch watch("tabu", 10s);
+        /* ticks:
+         * 250: 377252
+         * 1000: 59146
+         */
+        while (improve_with_tabu_search(gr, answer, watch)) {}
+    }
     answer.print();
 }

@@ -2,7 +2,12 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
-from scripts_common.check import check, distance
+from scripts_common.check import check
+
+def distance(a, b):
+    x = a[0] - b[0]
+    y = a[1] - b[1]
+    return (x**2 + y**2)**0.5
 
 def check_file(input, output):
     if len(output) == 0 or output[0].find("Score: ") == -1:

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 23)
 include_directories(../..)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_DEBUG -fsanitize=address,undefined")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address,undefined")
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_options(-O3)
 endif()

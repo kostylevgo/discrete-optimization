@@ -1,11 +1,6 @@
 import sys
 from pathlib import Path
 
-def distance(a, b):
-    x = a[0] - b[0]
-    y = a[1] - b[1]
-    return (x**2 + y**2)**0.5
-
 def get_test_size(name):
     l = list(name.split('_'))
     l = list(int(x) if x.isdigit() else x for x in l)

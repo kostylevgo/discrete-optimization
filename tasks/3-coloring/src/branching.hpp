@@ -3,6 +3,12 @@
 #include "coloring.hpp"
 #include <util/stopwatch.hpp>
 
+#include <cassert>
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
 struct Entry {
     int colors_nearby;
     int degree;
@@ -18,12 +24,8 @@ struct Entry {
 // using Set = absl::btree_set<Entry>;
 // x1.5 performance
 
-using Map = std::map<int, int>;
-using Set = std::set<Entry>;
-
-#include <bits/stdc++.h>
-
-using namespace std;
+using Map = map<int, int>;
+using Set = set<Entry>;
 
 class DSaturAwareGraph {
   private:
@@ -194,15 +196,13 @@ void branching(DSaturAwareGraph& g, Coloring& answer, int& best_k, int my_max_k,
     }
 }
 
-void improve_with_branching(const Graph& g, Coloring& answer, Stopwatch::Duration timeout = 10s) {
+void improve_with_branching(const Graph& g, Coloring& answer, Stopwatch::Duration timeout) {
     Stopwatch watch("branching", timeout);
     /* ticks:
      * 50:   2338
      * 70:   16841510
      * 100:  15477192
-     * 250:  515657
      * 500:  16214348
-     * 1000: 1754977
      */
     int best_k = answer.colors();
     DSaturAwareGraph gr(g);

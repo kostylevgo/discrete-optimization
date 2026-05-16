@@ -27,14 +27,22 @@ class Stopwatch {
     }
 
     void operator()() {
-        ++ticks;
-        if (now() > deadline) {
+        if (expired()) {
             throw TimeoutException{};
         }
     }
 
     void tick() {
         (*this)();
+    }
+
+    bool expired() {
+        ++ticks;
+        return now() > deadline;
+    }
+
+    explicit operator bool() {
+        return !expired();
     }
 
     ~Stopwatch() {

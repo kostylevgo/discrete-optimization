@@ -4,16 +4,17 @@ set -euo pipefail
 
 data="data"
 results="results"
-exe_debug="./build-debug/solve"
-exe_release="./build-release/solve"
-exe="$exe_release"
 
-compile_debug="cmake --build build-debug --target solve -j20"
-compile_release="cmake --build build-release --target solve -j20"
+# profile="debug"
+profile="release"
+
+exe="./build-$profile/solve"
+
+compile="cmake --build build-$profile --target solve -j20"
 
 echo compiling...
 
-$compile_release
+$compile
 
 mkdir "$results" -p
 

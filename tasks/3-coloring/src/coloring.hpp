@@ -29,7 +29,17 @@ struct Graph : vector<vector<int>> {
         }
     }
 
+    int edges() const {
+        int sum = 0;
+        for (auto& v : (*this)) {
+            sum += v.size();
+        }
+        return sum;
+    }
+
     Coloring evaluate(const Order& order) const;
+
+    int clashes(const Coloring&) const;
 };
 
 struct Order : vector<int> {
@@ -64,6 +74,39 @@ struct Coloring : vector<int> {
             cout << col << ' ';
         }
         cout << endl;
+    }
+
+    void reorder_colors_by_frequency() {
+        int colors_cnt = colors();
+        Statistic st(colors_cnt);
+        st.account(*this);
+        vector<int> ord(colors_cnt);
+        iota(ord.begin(), ord.end(), 0);
+        ranges::sort(ord, greater(), [&](int c) {
+            return st[c];
+        });
+        vector<int> inverse_ord(ord.size());
+        for (int i = 0; i < ord.size(); ++i) {
+            inverse_ord[ord[i]] = i;
+        }
+        for (auto& x : *this) {
+            if (x != kNoColor) {
+                x = inverse_ord[x];
+            }
+        }
+    }
+
+    void drop_last_color_uniformly() {
+        int colors_cnt = colors();
+        int p = 0;
+        for (auto& x : *this) {
+            if (x == colors_cnt - 1) {
+                x = p++;
+                if (p == colors_cnt - 1) {
+                    p = 0;
+                }
+            }
+        }
     }
 
     strong_ordering operator<=>(const Coloring& other) const {
