@@ -2,6 +2,8 @@
 #include "set_cover.hpp"
 #include "precise_methods/dynamic_programming.hpp"
 
+#include <util/call_python.hpp>
+
 #include <unistd.h>
 
 void greedy(const SetCover& task) {
@@ -12,16 +14,6 @@ void greedy(const SetCover& task) {
 void beam(const SetCover& task, size_t bound) {
     SetCover beam = beam_search(task, bound);
     beam.print();
-}
-
-void call_python(char* input, std::string file) {
-    freopen(input, "r", stdin);
-    std::string python = "./venv/bin/python3";
-    char* argv[3];
-    argv[0] = python.data();
-    argv[1] = file.data();
-    argv[2] = nullptr;
-    execve(python.data(), argv, nullptr);
 }
 
 int main(int argc, char** argv) {

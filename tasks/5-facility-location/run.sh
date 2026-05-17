@@ -20,7 +20,7 @@ for file in ./"$data"/*; do
     name=$(basename "$file")
     echo "running $name"
     if [ -f "$file" ]; then
-        /usr/bin/time -f "time: %E" "$exe" <"$file" >"./$results/$name"
+        /usr/bin/time -f "time: %E" "$exe" "$file" <"$file" >"./$results/$name"
     fi
 done
 
