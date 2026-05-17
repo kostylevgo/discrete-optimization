@@ -43,7 +43,7 @@ struct Problem {
 
 class Car {
   public:
-    struct SolveGoodTag {static constexpr tsp::Solution(*kMethod)(tsp::Problem) = tsp::solve;};
+    struct SolveGoodTag {static constexpr tsp::Solution(*kMethod)(tsp::Problem) = tsp::solve_good;};
     struct SolveFastTag {static constexpr tsp::Solution(*kMethod)(tsp::Problem) = tsp::solve_fast;};
 
     explicit Car(const Problem& p): p_(&p), remaining_capacity(p.car_capacity) {}
