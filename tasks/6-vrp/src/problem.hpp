@@ -20,12 +20,16 @@ struct Problem {
     int cars;
     int car_capacity;
     vector<Customer> customers;
+    Point origin;
 
     void read() {
         int n;
+        int zero;
         cin >> n >> cars >> car_capacity;
         customers.resize(n);
         cin >> customers;
+        origin = customers[0].location;
+        customers.erase(customers.begin());
     }
 
     int total_demand() {
@@ -49,7 +53,7 @@ class Car {
         vector<Point> points;
         points.reserve(indices.size() + 1);
         ranges::copy(indices | views::transform([&](int i) {return p.customers[i].location;}), back_inserter(points));
-        points.push_back(kOrigin);
+        points.push_back(p.origin);
         tsp::Solution s = Tag::kMethod(std::move(points));
         ranges::rotate(s, ranges::find(s, indices.size()));
         route_.reserve(indices.size());
@@ -66,24 +70,46 @@ class Car {
         return route_;
     }
 
+    size_t size() const {
+        return route().size();
+    }
+
     void optimize() {
         *this = Car(SolveGoodTag{}, *p_, route_);
     }
 
+    void shuffle(mt19937& gen) {
+        ranges::shuffle(route_, gen);
+    }
+
     double length() const {
-        Point last_point = kOrigin;
+        Point last_point = p_->origin;
         double ans = 0;
         for (auto x : route_) {
             ans += distance(last_point, p_->customers[x].location);
             last_point = p_->customers[x].location;
         }
-        ans += distance(last_point, kOrigin);
+        ans += distance(last_point, p_->origin);
         return ans;
     }
 
     void add(int index) {
         remaining_capacity -= p_->customers[index].demand;
         route_.push_back(index);
+    }
+
+    void erase(int pos) {
+        remaining_capacity += p_->customers[route_[pos]].demand;
+        route_.erase(route_.begin() + pos);
+    }
+
+    bool valid() const {
+        return remaining_capacity >= 0;
+    }
+
+    int overflow() const {
+        if (valid()) return 0;
+        return -remaining_capacity;
     }
 
   private:
@@ -112,6 +138,15 @@ struct Solution : private vector<Car> {
         return true;
     }
 
+    void add_to_car(int car_index, int item) {
+        ++usages_[item];
+        (*this)[car_index].add(item);
+    }
+
+    void shuffle_car(int car_index, mt19937& gen) {
+        (*this)[car_index].shuffle(gen);
+    }
+
     void add(Car car) {
         for (auto x : car.route()) {
             ++usages_[x];
@@ -126,10 +161,19 @@ struct Solution : private vector<Car> {
     }
 
     void pop() {
-        for (auto x : back().route()) {
+        erase(car_count() - 1);
+    }
+
+    void erase(int index) {
+        auto it = (*this).begin() + index;
+        for (auto x : it->route()) {
             --usages_[x];
         }
-        pop_back();
+        vector::erase(it);
+    }
+
+    const Car& car(int index) const {
+        return (*this)[index];
     }
 
     size_t car_count() const {
@@ -143,8 +187,19 @@ struct Solution : private vector<Car> {
     void print() {
         cout << "Score: " << setprecision(3) << fixed << length() << endl;
         for (auto& car : *this) {
-            cout << car.route();
+            for (auto x : car.route()) {
+                cout << x + 1 << ' ';
+            }
+            cout << endl;
         }
+    }
+
+    int overflow() const {
+        int ans = 0;
+        for (auto& c : *this) {
+            ans += c.overflow();
+        }
+        return ans;
     }
 
     partial_ordering operator<=>(const Solution& other) const {

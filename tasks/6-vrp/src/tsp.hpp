@@ -14,6 +14,9 @@ Solution solve_fast(Problem p) {
 }
 
 Solution solve(Problem p) {
+    if (p.size() <= 3) {
+        return greedy_fixed_starting(p);
+    }
     Solution answer = christofides_serduykov(p);
 
     Stopwatch watch("", 50ms);

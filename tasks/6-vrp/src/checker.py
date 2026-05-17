@@ -17,7 +17,8 @@ def check_file(input, output):
 
     customers_count, cars, capacity = map(int, input[0].split())
     customers = list(tuple(map(float, line.split())) for line in input[1:])
-    
+    origin = customers[0][1:]
+
     routes = list(list(map(int, l.split())) for l in output[1:])
     if len(routes) > cars:
         return f"Wrong answer: used {len(routes)} cars, but only {cars} are available"
@@ -25,7 +26,7 @@ def check_file(input, output):
     all_points = []
     for r in routes:
         all_points += r
-    if len(all_points) != customers_count or len(set(all_points)) != customers_count:
+    if len(all_points) != customers_count - 1 or set(all_points) != set(range(1, customers_count)):
         return "Wrong answer: incorrect routes"
 
     real_answer = 0
@@ -33,13 +34,13 @@ def check_file(input, output):
         if any(x < 0 or x >= customers_count for x in route):
             return f"Wrong answer: incorrect route for car {i}"
         used_capacity = 0
-        last_point = (0, 0)
+        last_point = origin
 
         for customer in map(lambda i: customers[i], route):
             real_answer += distance(last_point, customer[1:])
             last_point = customer[1:]
             used_capacity += customer[0]
-        real_answer += distance(last_point, (0, 0))
+        real_answer += distance(last_point, origin)
 
         if used_capacity > capacity + 1e-2:
             return f"Wrong answer: car {i} is overflown"
