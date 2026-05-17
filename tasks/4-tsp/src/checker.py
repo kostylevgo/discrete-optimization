@@ -31,7 +31,7 @@ def check_file(input, output):
     if abs(real_answer - promised_answer) > 1e-2:
         return f"Wrong answer: promised {promised_answer:.3f}, real {real_answer:.3f}"
     
-    return f"Ok {real_answer:.3f}"
+    return f"Ok {real_answer:.3f}", real_answer
 
 
 if __name__ == "__main__":

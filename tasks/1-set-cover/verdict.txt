@@ -1,6 +1,7 @@
-sc_157_0: Ok 94400
-sc_330_0: Ok 23
-sc_1000_11: Ok 146
-sc_5000_1: Ok 30
-sc_10000_2: Ok 167
-sc_10000_5: Ok 64
+sc_157_0: Ok 94400, 5 points
+sc_330_0: Ok 23, 5 points
+sc_1000_11: Ok 146, 5 points
+sc_5000_1: Ok 30, 5 points
+sc_10000_2: Ok 167, 5 points
+sc_10000_5: Ok 64, 5 points
+30 points

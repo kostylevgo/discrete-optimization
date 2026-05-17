@@ -25,7 +25,7 @@ def check_file(input, output):
         if colors[u] == colors[v]:
             return f"Wrong coloring: colors of {u} and {v} are the same"
     
-    return f"Ok {real_answer}"
+    return f"Ok {real_answer}", real_answer
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
-ks_30_0: Ok 99798
-ks_50_0: Ok 142156
-ks_200_0: Ok 100236
-ks_400_0: Ok 3967180
-ks_1000_0: Ok 109899
-ks_10000_0: Ok 1099893
+ks_30_0: Ok 99798, 5 points
+ks_50_0: Ok 142156, 5 points
+ks_200_0: Ok 100236, 5 points
+ks_400_0: Ok 3967180, 5 points
+ks_1000_0: Ok 109899, 5 points
+ks_10000_0: Ok 1099893, 5 points
+30 points

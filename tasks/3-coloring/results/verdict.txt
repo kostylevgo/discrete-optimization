@@ -1,6 +1,7 @@
-gc_50_3: Ok 6
-gc_70_7: Ok 17
-gc_100_5: Ok 16
-gc_250_9: Ok 77
-gc_500_1: Ok 15
-gc_1000_5: Ok 98
+gc_50_3: Ok 6, 5 points
+gc_70_7: Ok 17, 5 points
+gc_100_5: Ok 16, 5 points
+gc_250_9: Ok 77, 5 points
+gc_500_1: Ok 15, 5 points
+gc_1000_5: Ok 98, 5 points
+30 points

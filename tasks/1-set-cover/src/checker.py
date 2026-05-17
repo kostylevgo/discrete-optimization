@@ -31,7 +31,7 @@ def check_file(input, output):
     if real_score != promised_score:
         return f"Wrong score: promised {promised_score}, real {real_score}"
     
-    return f"Ok {real_score}"
+    return f"Ok {real_score}", real_score
 
 if __name__ == "__main__":
     check(check_file)
