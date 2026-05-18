@@ -23,7 +23,15 @@ int main() {
 
     optional<Solution> ans = solve_plain_tsp(p, 1min);
 
-    optional<Solution> ans2 = solve_annealings(p, 1min);
+    optional<Solution> ans2 = solve_annealings(p, p.customers.size() < 100 ? 5min : 1min);
+    /*
+     * ticks:
+     * 26:  2430
+     * 51:  193
+     * 101: 45
+     * 200: 48
+     * 421: 51
+    */
     if (ans2 && (!ans || ans2->length() < ans->length())) {
         ans = ans2;
     }

@@ -161,7 +161,7 @@ optional<Solution> solve_annealings(const Problem& p, Stopwatch::Duration timeou
     optional<Solution> best;
 
     double t0 = estimate_t0(p);
-    double t_step = 0.90;
+    double t_step = 0.97;
     int opts_per_step = 200;
     double start_overflow_penalty = estimate_start_overflow_penalty(p);
 
